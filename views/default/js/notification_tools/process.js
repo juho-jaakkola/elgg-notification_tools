@@ -5,16 +5,20 @@
  * for all users.
  */
 define(function(require) {
+	var methods = '';
+	var offset = 0;
+
 	/**
 	 * Process a batch of users
 	 *
 	 * @param {Int} offset
 	 * @param {String} operation
 	 */
-	processBatch = function(offset, operation) {
+	processBatch = function(operation) {
 		var options = {
 			data: {
-				offset: offset
+				offset: offset,
+				methods: methods
 			},
 			dataType: 'json'
 		};
@@ -22,19 +26,24 @@ define(function(require) {
 		options.data = elgg.security.addToken(options.data);
 		options.success = function(json) {
 			if (json.output.count) {
-				var oldValue = $('#progressbar-' + operation).progressbar("value");
-				var newValue = oldValue + offset;
+				offset += json.output.count;
 
-				processBatch(offset + 10, operation);
+				processBatch(operation);
 			} else {
 				newValue = 100;
+
+				$('.elgg-button-submit').prop("disabled", false);
 			}
 
-			$('#progressbar-' + operation).progressbar({value: newValue});
+			$('#progressbar-' + operation).progressbar({value: offset});
+
+			if (json.status === -1) {
+				$('.elgg-button-submit').prop("disabled", false);
+			}
 		};
 
 		var action = 'action/notification_tools/enable_' + operation;
-		elgg.post(action, options);
+		elgg.action(action, options);
 	};
 
 	/**
@@ -45,18 +54,21 @@ define(function(require) {
 	enable = function(e) {
 		e.preventDefault();
 
-		// TODO Get the desired notification methods from the form
-		processBatch(0, this.dataset.operation);
+		$('.elgg-button-submit').prop("disabled", true);
+
+		data = $(this).serialize();
+
+		methods = $(this).find("input[type=checkbox]:checked").parent().text();
+
+		processBatch(this.dataset.operation);
 	};
 
-	$(document).on('click', '#enable-personal', enable);
-	$(document).on('click', '#enable-collection', enable);
-	$(document).on('click', '#enable-group', enable);
+	$(document).on('submit', 'form', enable);
 
 	$('.elgg-progressbar').each(function (key, value) {
 		$(this).progressbar({
 			value: 0,
-			total: this.dataset.total
+			max: this.dataset.total
 		});
 	});
 });

@@ -11,7 +11,9 @@ elgg_register_event_handler('init', 'system', 'notification_tools_init');
 function notification_tools_init () {
 	$plugin_dir = elgg_get_plugins_path() . 'notification_tools/';
 
-	elgg_register_action('notification_tools/admin/enable',  "{$plugin_dir}actions/notification_tools/admin/enable.php", 'admin');
+	elgg_register_action('notification_tools/enable_personal',  "{$plugin_dir}actions/notification_tools/enable_personal.php", 'admin');
+	elgg_register_action('notification_tools/enable_collection',  "{$plugin_dir}actions/notification_tools/enable_collection.php", 'admin');
+	elgg_register_action('notification_tools/enable_group',  "{$plugin_dir}actions/notification_tools/enable_group.php", 'admin');
 
 	// This overrides the default save action
 	elgg_register_action('notification_tools/settings/save',  "{$plugin_dir}actions/notification_tools/settings/save.php", 'admin');

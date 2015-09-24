@@ -18,10 +18,15 @@ $link = elgg_view('output/url', array(
 	'class' => 'elgg-button elgg-button-action',
 ));
 
+$form = elgg_view_form('notification_tools/methods', array(
+	'data-operation' => $setting,
+	'action' => "notification_tools/enable_{$setting}",
+));
+
 echo <<<HTML
 	<div class="elgg-border-plain pvl phm mvl">
 		<p>$enable_desc</p>
 		<div class="elgg-progressbar" data-total="$count" id="progressbar-$setting"></div>
-		<p>$link</p>
+		$form
 	</div>
 HTML;
