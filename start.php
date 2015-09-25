@@ -37,10 +37,9 @@ function notification_tools_init () {
  */
 function notification_tools_enable_for_new_user ($event, $type, $user) {
 	$personal = elgg_get_plugin_setting('default_personal_methods', 'notification_tools');
-	$collection = elgg_get_plugin_setting('default_collection_methods', 'notification_tools');
 
 	// Set methods for personal notifications
-	if ($personal_methods) {
+	if ($personal) {
 		$personal_methods = explode(',', $personal);
 
 		foreach ($personal_methods as $method) {
@@ -49,14 +48,16 @@ function notification_tools_enable_for_new_user ($event, $type, $user) {
 		}
 	}
 
+	$collection = elgg_get_plugin_setting('default_collection_methods', 'notification_tools');
+
 	// Set methods for notifications about friends' activity
-	if ($collection_methods) {
+	if ($collection) {
 		$collection_methods = explode(',', $collection);
 
 		// Here we just mark the default methods. The core notification plugin
 		// will take care of creating the actual 'notify<method>' relationships
 		// between user and each friends.
-		foreach ($personal_methods as $method) {
+		foreach ($collection_methods as $method) {
 			$setting_name = "collections_notifications_preferences_{$method}";
 			// The -1 seems like a weird value but that's what the core
 			// is using for whatever reason.
