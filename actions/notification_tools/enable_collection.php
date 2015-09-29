@@ -1,36 +1,39 @@
 <?php
 /**
- * Enable notifier as a notification method for a batch of users.
+ * Enable selected notification methods for a batch of users
  */
 
-$dbprefix = elgg_get_config('dbprefix');
+$methods = get_input('methods');
+$offset = get_input('offset');
 
-$collections_name_metastring_id = get_metastring_id('collections_notifications_preferences_notifier');
+if (empty($methods)) {
+	register_error(elgg_echo('notification_tools:error:no_methods'));
+	forward(REFERER);
+}
+
+$methods = explode(' ', $methods);
+
 $users = elgg_get_entities(array(
 	'types' => array('user'),
-	'wheres' => array(
-		"NOT EXISTS (
-			SELECT 1 FROM {$dbprefix}metadata md
-			WHERE md.entity_guid = e.guid
-			AND md.name_id = $collections_name_metastring_id
-		)",
-	),
+	'offset' => $offset,
 ));
 
 foreach ($users as $user) {
-	// Enable notifier as notification method
-	$user->collections_notifications_preferences_notifier = -1;
+	foreach ($methods as $method) {
+		// Set default notification methods for collections
+		$metadata_name = "collections_notifications_preferences_$method";
+		$user->$metadata_name = -1;
 
-	$options = array(
-		'relationship' => 'friend',
-		'relationship_guid' => $user->guid,
-		'type' => 'user',
-	);
+		// Subscribe user to receive notifier notifications from each friend
+		$batch = new ElggBatch('elgg_get_entities_from_relationship', array(
+			'relationship' => 'friend',
+			'relationship_guid' => $user->guid,
+			'type' => 'user',
+		));
 
-	// Subscribe user to receive notifier notifications from each friend
-	$batch = new ElggBatch('elgg_get_entities_from_relationship', $options);
-	foreach ($batch as $friend) {
-		add_entity_relationship($user->guid, 'notifynotifier', $friend->guid);
+		foreach ($batch as $friend) {
+			add_entity_relationship($user->guid, "notify{$method}", $friend->guid);
+		}
 	}
 }
 
