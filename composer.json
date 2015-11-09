@@ -1,6 +1,6 @@
 {
 	"name": "juho-jaakkola/elgg-notification_tools",
-	"description": "Displays notifications in Elgg topbar.",
+	"description": "Provides notification related tools for Elgg site administrations.",
 	"type": "elgg-plugin",
 	"keywords": [
 		"elgg",
