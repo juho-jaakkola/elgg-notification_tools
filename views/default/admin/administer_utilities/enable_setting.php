@@ -24,9 +24,9 @@ $form = elgg_view_form('notification_tools/methods', array(
 ));
 
 echo <<<HTML
-	<div class="elgg-border-plain pvl phm mvl">
+	<div class="elgg-border-plain pvm phm mvl">
 		<p>$enable_desc</p>
-		<div class="elgg-progressbar" data-total="$count" id="progressbar-$setting"></div>
+		<div class="elgg-progressbar mbm" data-total="$count" id="progressbar-$setting"></div>
 		$form
 	</div>
 HTML;
