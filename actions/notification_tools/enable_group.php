@@ -11,6 +11,8 @@ if (empty($methods)) {
 	forward(REFERER);
 }
 
+$reg_methods = _elgg_services()->notifications->getMethods();
+
 $methods = explode(' ', $methods);
 
 // TODO Verify that notification methods are valid
@@ -32,8 +34,12 @@ LIMIT {$offset}, {$limit}";
 $memberships = get_data($query);
 
 foreach ($memberships as $membership) {
-	foreach ($methods as $method) {
-		add_entity_relationship($membership->user_guid, "notify{$method}", $membership->group_guid);
+	foreach ($reg_methods as $reg_method) {
+		if(in_array($reg_method,$methods)){
+			add_entity_relationship($membership->user_guid, "notify{$reg_method}", $membership->group_guid);
+		}else{
+			remove_entity_relationship($membership->user_guid, "notify{$reg_method}", $membership->group_guid);			
+		}
 	}
 }
 
