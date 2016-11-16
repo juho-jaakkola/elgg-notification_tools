@@ -5,6 +5,7 @@
 
 $methods = get_input('methods');
 $offset = get_input('offset');
+$reg_methods = _elgg_services()->notifications->getMethods();
 
 if (empty($methods)) {
 	register_error(elgg_echo('notification_tools:error:no_methods'));
@@ -19,9 +20,13 @@ $users = elgg_get_entities(array(
 ));
 
 foreach ($users as $user) {
-	foreach ($methods as $method) {
-		$metastring_name = "notification:method:{$method}";
-		$user->$metastring_name = true;
+	foreach ($reg_methods as $reg_method) {
+		$metastring_name = "notification:method:{$reg_method}";
+		if (in_array($reg_method,$methods)){
+			$user->$metastring_name = true;
+		} else {
+			$user->$metastring_name = false;
+		}
 	}
 }
 

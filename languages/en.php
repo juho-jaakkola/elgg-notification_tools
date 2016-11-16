@@ -11,9 +11,9 @@ return array(
 	'notification_tools:settings:group' => 'Group notifications',
 
 	// Bulk operations
-	'notification_tools:process:personal' => 'Enable personal notifications for all users (%s)',
-	'notification_tools:process:collection' => 'Enable collection notifications for all users (%s)',
-	'notification_tools:process:group' => 'Enable group notifications for all group memberships (%s)',
+	'notification_tools:process:personal' => 'Enable personal notifications for all users (%s) <br><i>Checked methods will be enabled and the unchecked methods will become disabled.</i>',
+	'notification_tools:process:collection' => 'Enable collection notifications for all users (%s) <br><i>Checked methods will be enabled and the unchecked methods will become disabled.</i>',
+	'notification_tools:process:group' => 'Enable group notifications for all group memberships (%s) <br><i>Checked methods will be enabled and the unchecked methods will become disabled.</i>',
 	'notification_tools:admin:activate' => 'Enable',
 	'notification_tools:error:no_methods' => 'Choose at least one notification method',
 );
