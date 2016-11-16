@@ -35,9 +35,9 @@ $memberships = get_data($query);
 
 foreach ($memberships as $membership) {
 	foreach ($reg_methods as $reg_method) {
-		if(in_array($reg_method,$methods)){
+		if (in_array($reg_method,$methods)){
 			add_entity_relationship($membership->user_guid, "notify{$reg_method}", $membership->group_guid);
-		}else{
+		} else {
 			remove_entity_relationship($membership->user_guid, "notify{$reg_method}", $membership->group_guid);			
 		}
 	}
