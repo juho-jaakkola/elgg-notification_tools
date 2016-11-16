@@ -22,9 +22,9 @@ $users = elgg_get_entities(array(
 foreach ($users as $user) {
 	foreach ($reg_methods as $reg_method) {
 		$metastring_name = "notification:method:{$reg_method}";
-		if(in_array($reg_method,$methods)){
+		if (in_array($reg_method,$methods)){
 			$user->$metastring_name = true;
-		}else{
+		} else {
 			$user->$metastring_name = false;
 		}
 	}
