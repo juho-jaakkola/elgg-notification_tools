@@ -1,6 +1,6 @@
 <?php
 /**
- * Enable selected notification methods for a batch of users 
+ * Enable selected notification methods for a batch of users
  */
 $methods = get_input('methods');
 $offset = get_input('offset');
@@ -28,12 +28,12 @@ foreach ($reg_methods as $reg_method) {
 			'type' => 'user',
 		));
 			
-		if(in_array($reg_method,$methods)){
-		$user->$metadata_name = -1;
+		if (in_array($reg_method,$methods)){
+			$user->$metadata_name = -1;
 			foreach ($batch as $friend) {
 				add_entity_relationship($user->guid, "notify{$reg_method}", $friend->guid);
 			}
-		}else{
+		} else {
 		$user->$metadata_name = 0;
 			foreach ($batch as $friend) {
 				remove_entity_relationship($user->guid, "notify{$reg_method}", $friend->guid);
